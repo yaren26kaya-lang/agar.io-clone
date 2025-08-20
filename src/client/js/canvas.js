@@ -152,3 +152,14 @@ class Canvas {
 }
 
 module.exports = Canvas;
+// canvas değişkeni oyunda zaten tanımlıysa kullan
+canvas.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    if(e.deltaY < 0) { // yukarı kaydırma = yakınlaş
+        zoom += zoomStep;
+    } else { // aşağı kaydırma = uzaklaş
+        zoom -= zoomStep;
+    }
+    // Zoom sınırları
+    zoom = Math.min(Math.max(zoom, minZoom), maxZoom);
+});
