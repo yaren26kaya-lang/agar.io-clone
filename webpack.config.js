@@ -10,7 +10,13 @@ module.exports = (isProduction) => ({
         rules: getRules(isProduction)
     },
 });
-
+-login adminşifre (admin şifresi ile giriş)
+-dark (karanlık tema)
+-border (oyun oynanan alana çizgi çeker)
+-mass (kaç adet baloncuk topladığını sayar)
+-contiunity (akıcılık / süreklilik sağlar)
+-foodrounded (yuvarlak baloncuk)
+-kick kullanıcı (oyuncu banlar)
 function getRules(isProduction) {
     if (isProduction) {
         return [
