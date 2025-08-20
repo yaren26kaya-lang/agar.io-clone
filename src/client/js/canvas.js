@@ -1,3 +1,108 @@
+// --- Oyun Değişkenleri ---
+let gold = 0;
+let score = 0;
+let zoom = 1;
+const zoomStep = 0.1;
+const minZoom = 0.5;
+const maxZoom = 2;
+
+// Canvas ve Context
+const canvas = document.querySelector('canvas');
+const ctx = canvas.getContext('2d');
+
+// --- Zoom Kontrolü ---
+canvas.addEventListener('wheel', function(e){
+    e.preventDefault();
+    zoom += (e.deltaY < 0) ? zoomStep : -zoomStep;
+    zoom = Math.min(Math.max(zoom, minZoom), maxZoom);
+});
+
+// --- Yem atma (E tuşu) ---
+document.addEventListener('keydown', function(e){
+    if(e.key.toLowerCase() === 'e'){
+        spawnFood();
+    }
+});
+
+// Yem spawn fonksiyonu (simülasyon)
+function spawnFood() {
+    console.log("Yem atıldı!");
+    // Burada client-server entegrasyonu varsa servera yollayabilirsin
+}
+
+// --- Gold ve Skor Güncelleme ---
+function addGold(amount){
+    gold += amount;
+    console.log("Gold: " + gold);
+}
+
+function addScore(amount){
+    score += amount;
+    console.log("Skor: " + score);
+}
+
+// --- Admin Paneli ---
+if(!document.getElementById('adminPanel')){
+    const panel = document.createElement('div');
+    panel.id = 'adminPanel';
+    panel.style.position = 'fixed';
+    panel.style.top = '10px';
+    panel.style.right = '10px';
+    panel.style.width = '300px';
+    panel.style.background = '#111';
+    panel.style.color = '#fff';
+    panel.style.padding = '15px';
+    panel.style.border = '2px solid red';
+    panel.style.borderRadius = '10px';
+    panel.style.zIndex = 9999;
+
+    panel.innerHTML = `
+        <h3 style="color:red;">Admin Panel</h3>
+        <button id="goldBtn">Gold Ekle +10</button>
+        <button id="scoreBtn">Skor Ekle +10</button>
+        <button id="foodBtn">Yem At (E)</button>
+        <button id="hidePanelBtn">Kapat</button>
+    `;
+    document.body.appendChild(panel);
+    panel.style.display = 'none';
+}
+
+// --- Panel Fonksiyonları ---
+document.getElementById('goldBtn').onclick = () => addGold(10);
+document.getElementById('scoreBtn').onclick = () => addScore(10);
+document.getElementById('foodBtn').onclick = spawnFood;
+document.getElementById('hidePanelBtn').onclick = () => {
+    document.getElementById('adminPanel').style.display = 'none';
+};
+
+// --- Paneli Aç/Kapat (7 tuşu) ---
+document.addEventListener('keydown', function(e){
+    if(e.key === '7'){
+        const panel = document.getElementById('adminPanel');
+        panel.style.display = (panel.style.display==='none')?'block':'none';
+    }
+});
+
+// --- Canvas Çiziminde Zoom ---
+function draw(){
+    ctx.save();
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.scale(zoom, zoom);
+
+    // Oyuncu ve yemleri çiz
+    drawPlayer();
+    drawFoodCanvas();
+
+    ctx.restore();
+    requestAnimationFrame(draw);
+}
+
+function drawPlayer(){ /* Oyuncuyu çiz */ }
+function drawFoodCanvas(){ /* Yemleri çiz */ }
+
+draw();
+
+
 var global = require('./global');
 
 class Canvas {
